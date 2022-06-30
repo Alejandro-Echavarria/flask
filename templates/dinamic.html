@@ -1,3 +1,14 @@
-<h1>URL dinamica</h1>
+<style>
+    .alert-success{
+        color: rgb(120, 175, 120);
+    }
+</style>
 
+<h1>URL dinamica</h1>
 <h2>name: {{name}}</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <h3 class="alert-{{ category }}"> {{ message }} </h3>
+    {% endfor %}
+{% endwith %}

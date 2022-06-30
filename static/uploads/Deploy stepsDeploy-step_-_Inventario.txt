@@ -1,0 +1,57 @@
+-- ---------------------------------------------------------------------------------- --
+-- Pasos para el Deploy de la app Inventario
+-- NOVEDADES DE LA VERSION 1.0:
+--    > Aplicación completada, lista para ser probada (Beta).
+-- 
+-- mechavarria, Abril 2022.
+-- ---------------------------------------------------------------------------------- --
+-- *** VERIFICAR PASOS ***
+-- 1) Setup/migracion Base de Datos cualquier ambiente
+-- ---------------------------------------------------------------------------------- --
+* Crear la Base de datos en el servidor y migrar los datos:
+   1) Crear la base de datos **bd_requisicion** con el cotejamiento de datos utf8_general_ci
+   2) Una vez realizado el paso 1, hacer la migracion (export) de la base de datos.
+   
+-- ---------------------------------------------------------------------------------- --
+-- 2) Ajustes (Puesta a punto) para la aplicación
+-- ---------------------------------------------------------------------------------- --
+1) Abrir archivo .env en el folder Inventario y modificar opcion app.baseURL para que se vea como sigue:
+      app.baseURL = 'http://localhost/inventario/'
+
+2) Abrir archivo en carpeta app/Config/ llamado App.php y modificar opción $baseURL para que se vea como sigue:
+      public $baseURL = 'http://localhost/inventario/';
+
+3) Abrir archivo en carpeta app/Config/ llamado Database.php y modificar opciones
+   de hostname, username, password y database con los nuevos datos de la base de datos.   
+   Username : reqadm/<Aqui el Password de este usuario> (Poner en el Llavero)
+
+-- ---------------------------------------------------------------------------------- --
+-- 3) Prueba de acceso a la app:
+-- ---------------------------------------------------------------------------------- --
+* Desde un browser acceder a la ruta:
+   //localhost/Inventario
+-- ---------------------------------------------------------------------------------- --
+-- Fin de la Documentacion
+-- ---------------------------------------------------------------------------------- --
+
+-- ------------------------------------------------------------------------------------ --
+-- Usuario para acceder a la Instancia Mysql del servidor
+-- ------------------------------------------------------------------------------------ --
+CREATE DATABASE bd_requisicion;
+drop user 'reqadm'@'localhost';
+drop user 'reqadm'@'%';
+
+CREATE USER 'reqadm'@'%' IDENTIFIED BY 'MyAcc3ssK3y';
+CREATE USER 'reqadm'@'localhost' IDENTIFIED BY 'MyAcc3ssK3y';
+
+GRANT ALL PRIVILEGES ON bd_requisicion.* TO 'reqadm'@'%';
+GRANT ALL PRIVILEGES ON bd_requisicion.* TO 'reqadm'@'localhost';
+
+-- ------------------------------------------------------------------------------------ --
+-- Permisos para la tabla de GRAL
+-- ------------------------------------------------------------------------------------ --
+
+GRANT ALL PRIVILEGES ON bd_gral.* TO 'reqadm'@'%';
+GRANT ALL PRIVILEGES ON bd_gral.* TO 'reqadm'@'localhost';
+-- ------------------------------------------------------------------------------------ --
+-- 
