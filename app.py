@@ -1,19 +1,32 @@
+from crypt import methods
+from curses import meta
 from flask import Flask, render_template, request, redirect, url_for, flash
 import json
 import os.path
 from werkzeug.utils import secure_filename
+from forms import LoginForm, SingupForm
 
 app = Flask(__name__)
 app.secret_key = "estoesunallavesecreta"
 
-@app.route("/home")
+@app.route("/home", methods = ["GET", "POST"])
 @app.route("/")
 def home():
-    return render_template('home.html')
+    login = LoginForm()
 
-@app.route("/login")
-def login():
-    return "Login page2"
+    if login.validate_on_submit():
+        return "<h1>" + singup.username.data + " | " + singup.password.data + "</h1>"
+
+    return render_template('login-form.html', form=login)
+
+@app.route("/singup", methods = ["GET", "POST"])
+def singup():
+    singup = SingupForm()
+
+    if singup.validate_on_submit():
+        return "<h1>" + singup.username.data + " | " + singup.email.data + " | " + singup.password.data + "</h1>"
+
+    return render_template('singup.html', form=singup)
 
 @app.route("/form")
 def form():
